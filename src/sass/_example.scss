@@ -26,3 +26,11 @@
   background-size: cover;
   background-position: center;
 }
+.loader,
+.error {
+  display: none;
+
+  &.show {
+    display: block;
+  }
+}
