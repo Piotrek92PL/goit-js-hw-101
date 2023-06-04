@@ -3,11 +3,9 @@ const loader = document.querySelector('.loader');
 const catInfo = document.querySelector('.cat-info');
 const error = document.querySelector('.error');
 
-// Unikalny klucz API
 const apiKey =
   'live_TziuycWEj2WE6BOPwhJ5cY6bz2X8qb25n1lv2G2sCFnxVGgRFM0OalXl4tG4StRH';
 
-// Funkcja do wyświetlania informacji o kocie
 function displayCatInfo(cat) {
   catInfo.innerHTML = `
     <img src="${cat.url}" alt="Cat Image">
@@ -17,13 +15,11 @@ function displayCatInfo(cat) {
   `;
 }
 
-// Funkcja obsługująca błąd
 function handleError(errorMsg) {
   error.textContent = errorMsg;
   error.classList.add('show');
 }
 
-// Funkcja do pobierania listy ras
 function fetchBreeds() {
   return fetch('https://api.thecatapi.com/v1/breeds', {
     headers: {
@@ -43,7 +39,6 @@ function fetchBreeds() {
     });
 }
 
-// Funkcja do pobierania informacji o kocie na podstawie rasy
 function fetchCatByBreed(breedId) {
   return fetch(
     `https://api.thecatapi.com/v1/images/search?breed_ids=${breedId}`,
@@ -76,20 +71,18 @@ function fetchCatByBreed(breedId) {
     });
 }
 
-// Obsługa zdarzenia wyboru opcji w select.breed-select
 breedSelect.addEventListener('change', () => {
   const selectedBreedId = breedSelect.value;
 
-  // Ukrycie div.cat-info i wyświetlenie p.loader
   catInfo.style.display = 'none';
   loader.style.display = 'block';
 
-  // Wysłanie żądania HTTP, aby pobrać informacje o kocie
+  
   fetchCatByBreed(selectedBreedId).then(cat => {
     // Wyświetlenie informacji o kocie
     displayCatInfo(cat);
 
-    // Ukrycie p.loader
+    
     loader.style.display = 'none';
 
     // Wyświetlenie div.cat-info
@@ -97,10 +90,10 @@ breedSelect.addEventListener('change', () => {
   });
 });
 
-// Inicjalizacja strony
+
 loader.style.display = 'block';
 
-// Wysłanie żądania HTTP, aby pobrać listę ras
+
 fetchBreeds().then(breeds => {
   breeds.forEach(breed => {
     const option = document.createElement('option');
@@ -109,9 +102,9 @@ fetchBreeds().then(breeds => {
     breedSelect.appendChild(option);
   });
 
-  // Wyświetlenie select.breed-select
+ 
   breedSelect.style.display = 'block';
 
-  // Ukrycie p.loader
+
   loader.style.display = 'none';
 });
