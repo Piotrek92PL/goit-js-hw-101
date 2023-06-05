@@ -1,16 +1,18 @@
 
 import SlimSelect from "slim-select";
-
 import Notiflix from "notiflix";
-
 const breedSelect = new SlimSelect(".breed-select");
-
 
 Notiflix.Notify.Init({
   width: "300px",
   position: "right-top",
   borderRadius: "5px",
 });
+
+const breedSelect = document.querySelector(".breed-select");
+const loader = document.querySelector(".loader");
+const catInfo = document.querySelector(".cat-info");
+const error = document.querySelector(".error");
 
 const apiKey =
   "live_TziuycWEj2WE6BOPwhJ5cY6bz2X8qb25n1lv2G2sCFnxVGgRFM0OalXl4tG4StRH";
@@ -27,7 +29,6 @@ function displayCatInfo(cat) {
 function handleError(errorMsg) {
   error.textContent = errorMsg;
   error.classList.add("show");
-  Notiflix.Notify.Failure("Oops! Something went wrong!");
 }
 
 function fetchBreeds() {
@@ -83,8 +84,8 @@ function fetchCatByBreed(breedId) {
     });
 }
 
-breedSelect.onChange(() => {
-  const selectedBreedId = breedSelect.selected();
+breedSelect.addEventListener("change", () => {
+  const selectedBreedId = breedSelect.value;
 
   catInfo.style.display = "none";
   loader.style.display = "block";
@@ -108,6 +109,5 @@ fetchBreeds().then((breeds) => {
   });
 
   breedSelect.style.display = "block";
-
   loader.style.display = "none";
 });
