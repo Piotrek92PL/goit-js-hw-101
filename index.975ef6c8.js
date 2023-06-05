@@ -579,12 +579,16 @@ var _slimSelect = require("slim-select");
 var _slimSelectDefault = parcelHelpers.interopDefault(_slimSelect);
 var _notiflix = require("notiflix");
 var _notiflixDefault = parcelHelpers.interopDefault(_notiflix);
-const breedSelect = new (0, _slimSelectDefault.default)(".breed-select");
+const slimSelect = new (0, _slimSelectDefault.default)(".breed-select");
 (0, _notiflixDefault.default).Notify.Init({
     width: "300px",
     position: "right-top",
     borderRadius: "5px"
 });
+const breedSelect = document.querySelector(".breed-select");
+const loader = document.querySelector(".loader");
+const catInfo = document.querySelector(".cat-info");
+const error = document.querySelector(".error");
 const apiKey = "live_TziuycWEj2WE6BOPwhJ5cY6bz2X8qb25n1lv2G2sCFnxVGgRFM0OalXl4tG4StRH";
 function displayCatInfo(cat) {
     catInfo.innerHTML = `
@@ -597,7 +601,6 @@ function displayCatInfo(cat) {
 function handleError(errorMsg) {
     error.textContent = errorMsg;
     error.classList.add("show");
-    (0, _notiflixDefault.default).Notify.Failure("Oops! Something went wrong!");
 }
 function fetchBreeds() {
     return fetch("https://api.thecatapi.com/v1/breeds", {
@@ -610,9 +613,9 @@ function fetchBreeds() {
     }).then((breeds)=>breeds.map((breed)=>({
                 id: breed.id,
                 name: breed.name
-            }))).catch((error1)=>{
-        handleError(error1.message);
-        console.error(error1);
+            }))).catch((error)=>{
+        handleError(error.message);
+        console.error(error);
     });
 }
 function fetchCatByBreed(breedId) {
@@ -633,13 +636,13 @@ function fetchCatByBreed(breedId) {
             temperament: breed.temperament
         };
         return cat;
-    }).catch((error1)=>{
-        handleError(error1.message);
-        console.error(error1);
+    }).catch((error)=>{
+        handleError(error.message);
+        console.error(error);
     });
 }
-breedSelect.onChange(()=>{
-    const selectedBreedId = breedSelect.selected();
+breedSelect.addEventListener("change", ()=>{
+    const selectedBreedId = breedSelect.value;
     catInfo.style.display = "none";
     loader.style.display = "block";
     fetchCatByBreed(selectedBreedId).then((cat)=>{
