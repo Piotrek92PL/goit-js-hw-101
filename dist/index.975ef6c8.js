@@ -579,7 +579,7 @@ var _slimSelect = require("slim-select");
 var _slimSelectDefault = parcelHelpers.interopDefault(_slimSelect);
 var _notiflix = require("notiflix");
 var _notiflixDefault = parcelHelpers.interopDefault(_notiflix);
-const breedSelect = new (0, _slimSelectDefault.default)(".breed-select");
+const slimSelect = new (0, _slimSelectDefault.default)(".breed-select");
 (0, _notiflixDefault.default).Notify.Init({
     width: "300px",
     position: "right-top",

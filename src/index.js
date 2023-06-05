@@ -1,7 +1,7 @@
 
 import SlimSelect from "slim-select";
 import Notiflix from "notiflix";
-const breedSelect = new SlimSelect(".breed-select");
+const slimSelect = new SlimSelect(".breed-select");
 
 Notiflix.Notify.Init({
   width: "300px",
