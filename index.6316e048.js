@@ -1,0 +1,7 @@
+const e=document.querySelector(".breed-select"),t=document.querySelector(".loader"),n=document.querySelector(".cat-info"),r=document.querySelector(".error"),o="live_TziuycWEj2WE6BOPwhJ5cY6bz2X8qb25n1lv2G2sCFnxVGgRFM0OalXl4tG4StRH";function a(e){r.textContent=e,r.classList.add("show")}e.addEventListener("change",()=>{let r=e.value;n.style.display="none",t.style.display="block",fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=${r}`,{headers:{"x-api-key":o}}).then(e=>{if(!e.ok)throw Error("Failed to fetch cat information.");return e.json()}).then(e=>{let t=e[0],n=t.breeds[0],r={url:t.url,name:n.name,description:n.description,temperament:n.temperament};return r}).catch(e=>{a(e.message),console.error(e)}).then(e=>{(function(e){n.innerHTML=`
+    <img src="${e.url}" alt="Cat Image" style="max-height: 600px;">
+    <h2>${e.name}</h2>
+    <p><strong>Description:</strong> ${e.description}</p>
+    <p><strong>Temperament:</strong> ${e.temperament}</p>
+  `})(e),t.style.display="none",n.style.display="block"})}),t.style.display="block",fetch("https://api.thecatapi.com/v1/breeds",{headers:{"x-api-key":o}}).then(e=>{if(!e.ok)throw Error("Failed to fetch breed list.");return e.json()}).then(e=>e.map(e=>({id:e.id,name:e.name}))).catch(e=>{a(e.message),console.error(e)}).then(n=>{n.forEach(t=>{let n=document.createElement("option");n.value=t.id,n.textContent=t.name,e.appendChild(n)}),t.style.display="none"});
+//# sourceMappingURL=index.6316e048.js.map
