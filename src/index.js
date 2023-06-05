@@ -1,14 +1,3 @@
-
-import SlimSelect from "slim-select";
-import Notiflix from "notiflix";
-const slimSelect = new SlimSelect(".breed-select");
-
-Notiflix.Notify.Init({
-  width: "300px",
-  position: "right-top",
-  borderRadius: "5px",
-});
-
 const breedSelect = document.querySelector(".breed-select");
 const loader = document.querySelector(".loader");
 const catInfo = document.querySelector(".cat-info");
@@ -91,9 +80,12 @@ breedSelect.addEventListener("change", () => {
   loader.style.display = "block";
 
   fetchCatByBreed(selectedBreedId).then((cat) => {
+    // Wyświetlenie informacji o kocie
     displayCatInfo(cat);
 
     loader.style.display = "none";
+
+    // Wyświetlenie div.cat-info
     catInfo.style.display = "block";
   });
 });
@@ -108,6 +100,5 @@ fetchBreeds().then((breeds) => {
     breedSelect.appendChild(option);
   });
 
-  breedSelect.style.display = "block";
   loader.style.display = "none";
 });
