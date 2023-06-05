@@ -1,14 +1,23 @@
-const breedSelect = document.querySelector('.breed-select');
-const loader = document.querySelector('.loader');
-const catInfo = document.querySelector('.cat-info');
-const error = document.querySelector('.error');
+
+import SlimSelect from "slim-select";
+
+import Notiflix from "notiflix";
+
+const breedSelect = new SlimSelect(".breed-select");
+
+
+Notiflix.Notify.Init({
+  width: "300px",
+  position: "right-top",
+  borderRadius: "5px",
+});
 
 const apiKey =
-  'live_TziuycWEj2WE6BOPwhJ5cY6bz2X8qb25n1lv2G2sCFnxVGgRFM0OalXl4tG4StRH';
+  "live_TziuycWEj2WE6BOPwhJ5cY6bz2X8qb25n1lv2G2sCFnxVGgRFM0OalXl4tG4StRH";
 
 function displayCatInfo(cat) {
   catInfo.innerHTML = `
-    <img src="${cat.url}" alt="Cat Image">
+    <img src="${cat.url}" alt="Cat Image" style="max-height: 600px;">
     <h2>${cat.name}</h2>
     <p><strong>Description:</strong> ${cat.description}</p>
     <p><strong>Temperament:</strong> ${cat.temperament}</p>
@@ -17,23 +26,26 @@ function displayCatInfo(cat) {
 
 function handleError(errorMsg) {
   error.textContent = errorMsg;
-  error.classList.add('show');
+  error.classList.add("show");
+  Notiflix.Notify.Failure("Oops! Something went wrong!");
 }
 
 function fetchBreeds() {
-  return fetch('https://api.thecatapi.com/v1/breeds', {
+  return fetch("https://api.thecatapi.com/v1/breeds", {
     headers: {
-      'x-api-key': apiKey,
+      "x-api-key": apiKey,
     },
   })
-    .then(response => {
+    .then((response) => {
       if (!response.ok) {
-        throw new Error('Failed to fetch breed list.');
+        throw new Error("Failed to fetch breed list.");
       }
       return response.json();
     })
-    .then(breeds => breeds.map(breed => ({ id: breed.id, name: breed.name })))
-    .catch(error => {
+    .then((breeds) =>
+      breeds.map((breed) => ({ id: breed.id, name: breed.name }))
+    )
+    .catch((error) => {
       handleError(error.message);
       console.error(error);
     });
@@ -44,17 +56,17 @@ function fetchCatByBreed(breedId) {
     `https://api.thecatapi.com/v1/images/search?breed_ids=${breedId}`,
     {
       headers: {
-        'x-api-key': apiKey,
+        "x-api-key": apiKey,
       },
     }
   )
-    .then(response => {
+    .then((response) => {
       if (!response.ok) {
-        throw new Error('Failed to fetch cat information.');
+        throw new Error("Failed to fetch cat information.");
       }
       return response.json();
     })
-    .then(data => {
+    .then((data) => {
       const catData = data[0];
       const breed = catData.breeds[0];
       const cat = {
@@ -65,46 +77,37 @@ function fetchCatByBreed(breedId) {
       };
       return cat;
     })
-    .catch(error => {
+    .catch((error) => {
       handleError(error.message);
       console.error(error);
     });
 }
 
-breedSelect.addEventListener('change', () => {
-  const selectedBreedId = breedSelect.value;
+breedSelect.onChange(() => {
+  const selectedBreedId = breedSelect.selected();
 
-  catInfo.style.display = 'none';
-  loader.style.display = 'block';
+  catInfo.style.display = "none";
+  loader.style.display = "block";
 
-  
-  fetchCatByBreed(selectedBreedId).then(cat => {
-    // Wyświetlenie informacji o kocie
+  fetchCatByBreed(selectedBreedId).then((cat) => {
     displayCatInfo(cat);
 
-    
-    loader.style.display = 'none';
-
-    // Wyświetlenie div.cat-info
-    catInfo.style.display = 'block';
+    loader.style.display = "none";
+    catInfo.style.display = "block";
   });
 });
 
+loader.style.display = "block";
 
-loader.style.display = 'block';
-
-
-fetchBreeds().then(breeds => {
-  breeds.forEach(breed => {
-    const option = document.createElement('option');
+fetchBreeds().then((breeds) => {
+  breeds.forEach((breed) => {
+    const option = document.createElement("option");
     option.value = breed.id;
     option.textContent = breed.name;
     breedSelect.appendChild(option);
   });
 
- 
-  breedSelect.style.display = 'block';
+  breedSelect.style.display = "block";
 
-
-  loader.style.display = 'none';
+  loader.style.display = "none";
 });
